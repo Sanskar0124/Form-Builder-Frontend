@@ -66,6 +66,7 @@ export default function CreateForm() {
     const navigate = useNavigate();
     const [formName, setFormName] = useState('')
     const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(false)
 
     const deleteQuestion = (id) => {
         setItems((prevItems) => prevItems.filter(item => item.id !== id));
@@ -86,70 +87,86 @@ export default function CreateForm() {
     };
 
     const saveForm = async () => {
+        setLoading(true);
         let totalPoints = 0
         for (let i = 0; i < form.length; i++) {
             totalPoints += parseInt(form[i].points)
         }
         let data = await UnAuthorizedApiRequest({ endpoint: '/forms', type: 'post', body: { name: formName, form, totalPoints } })
         if (data?.status === 200) navigate("/")
+        setLoading(false)
     }
 
     return (
-        <div >
-            <div className='d-flex justify-content-between mt-4 mx-5'>
-                <h4>New Form</h4>
-            </div>
-            <div className='container'>
-                <div className='mt-5 col-md-10'>
-                    <h5>Form Name</h5>
-                    <input value={formName} onChange={(event) => setFormName(event.target.value)} type="text" className="form-control text-center" placeholder='Enter Form Name' aria-describedby="emailHelp" />
-                </div>
-                <DndProvider backend={HTML5Backend}>
-                    {items.length > 0 ?
-                        (
-                            <div>
-                                {items.map((item, index) => (
-                                    <DraggableItem key={item.id} id={item.id} element={item.element} index={index} moveItem={moveItem} createNewQuestion={createNewQuestion} deleteQuestion={deleteQuestion} />
-                                ))}
-                            </div>
-                        )
-                        :
-                        (
-                            <div className='d-flex justify-content-center my-5 py-5 col-md-12'>
-                                <h5>No questions, add a new question by clicking on add button </h5>
-                                <Dropdown className="nav-item">
-                                    <Dropdown.Toggle as={CustomToggle} variant=" nav-link py-0 d-flex align-items-center" href="#" id="navbarDropdown">
-                                        <Link className="col-md-3 text-black d-flex">
-                                            <i className="btn-inner">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 11h-4v4h-2v-4H7v-2h4V7h2v4h4z" /></svg>
-                                            </i>
-                                        </Link>
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu as="ul" className="dropdown-menu-end">
-                                        {/* <Dropdown.Item >Reschedule time</Dropdown.Item> */}
-                                        <Dropdown.Header >Question Types</Dropdown.Header>
-                                        <Dropdown.Divider />
-                                        <Dropdown.Item onClick={() => createNewQuestion('categorize')}>Categories</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => createNewQuestion('cloze')}>Cloze</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => createNewQuestion('comprehension')}>Comprehension</Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </div>
-
-                        )
-                    }
-                </DndProvider>
-                {/* <Card className="rounded">
-                <Card.Body className="d-flex justify-content-between flex-wrap">
-                    <div className="header-title">
-                        <h4 className="card-title mb-0">Order</h4>
+        <div>
+            {loading ?
+                (
+                    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
                     </div>
-                </Card.Body>
-            </Card> */}
-                <div className='d-flex justify-content-end'>
-                    <Button onClick={() => saveForm()} className='btn-primary'>Save form</Button>
+                )
+                :
+                (
+                    <div>
+                        <div className='d-flex justify-content-between mt-4 mx-5'>
+                            <h4>New Form</h4>
+                        </div >
+                        <div className='container'>
+                            <div className='mt-5 col-md-10'>
+                                <h5>Form Name</h5>
+                                <input value={formName} onChange={(event) => setFormName(event.target.value)} type="text" className="form-control text-center" placeholder='Enter Form Name' aria-describedby="emailHelp" />
+                            </div>
+                            <DndProvider backend={HTML5Backend}>
+                                {items.length > 0 ?
+                                    (
+                                        <div>
+                                            {items.map((item, index) => (
+                                                <DraggableItem key={item.id} id={item.id} element={item.element} index={index} moveItem={moveItem} createNewQuestion={createNewQuestion} deleteQuestion={deleteQuestion} />
+                                            ))}
+                                        </div>
+                                    )
+                                    :
+                                    (
+                                        <div className='d-flex justify-content-center my-5 py-5 col-md-12'>
+                                            <h5>No questions, add a new question by clicking on add button </h5>
+                                            <Dropdown className="nav-item">
+                                                <Dropdown.Toggle as={CustomToggle} variant=" nav-link py-0 d-flex align-items-center" href="#" id="navbarDropdown">
+                                                    <Link className="col-md-3 text-black d-flex">
+                                                        <i className="btn-inner">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 11h-4v4h-2v-4H7v-2h4V7h2v4h4z" /></svg>
+                                                        </i>
+                                                    </Link>
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu as="ul" className="dropdown-menu-end">
+                                                    {/* <Dropdown.Item >Reschedule time</Dropdown.Item> */}
+                                                    <Dropdown.Header >Question Types</Dropdown.Header>
+                                                    <Dropdown.Divider />
+                                                    <Dropdown.Item onClick={() => createNewQuestion('categorize')}>Categories</Dropdown.Item>
+                                                    <Dropdown.Item onClick={() => createNewQuestion('cloze')}>Cloze</Dropdown.Item>
+                                                    <Dropdown.Item onClick={() => createNewQuestion('comprehension')}>Comprehension</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </div>
+
+                                    )
+                                }
+                            </DndProvider>
+                            {/* <Card className="rounded">
+            <Card.Body className="d-flex justify-content-between flex-wrap">
+                <div className="header-title">
+                    <h4 className="card-title mb-0">Order</h4>
                 </div>
-            </div>
-        </div>
+            </Card.Body>
+        </Card> */}
+                            <div className='d-flex justify-content-end'>
+                                <Button onClick={() => saveForm()} className='btn-primary'>Save form</Button>
+                            </div>
+                        </div>
+                    </div >
+                )
+            }
+        </div >
     )
 }
