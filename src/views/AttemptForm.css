@@ -1,0 +1,27 @@
+.d-flex {
+    display: flex;
+}
+
+.col-md-8 {
+    flex: 1;
+    /* Make the col-md-8 take the remaining space */
+}
+
+.overflow-auto {
+    overflow-y: auto;
+    /* Enable vertical scrolling for the left side */
+    height: 100vh;
+    /* Adjust the height as needed */
+}
+
+.overflow-auto::-webkit-scrollbar {
+    display: none;
+}
+
+.static-part {
+    position: sticky;
+    top: 50%;
+    z-index: 1;
+    /* Add this line for debugging */
+    /* Other styling properties for the static part */
+}
