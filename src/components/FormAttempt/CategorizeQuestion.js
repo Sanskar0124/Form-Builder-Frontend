@@ -42,7 +42,7 @@ const CategorizeQuestion = ({ ans, cat, description }) => {
     useEffect(() => {
         setWords(ans)
         let temCat = []
-        for (let i = 0; i < cat.length; i++) {
+        for (let i = 0; i < cat?.length; i++) {
             temCat.push({ id: cat[i].id, name: cat[i].text, words: [] })
         }
         setCatalogs(temCat)
@@ -104,7 +104,7 @@ const CategorizeQuestion = ({ ans, cat, description }) => {
                     <div>
                         <h5>Words</h5>
                         <div className='d-flex flex-wrap'>
-                            {words.map((word, index) => (
+                            {words?.map((word, index) => (
                                 <Word key={word.id} {...word} index={index} moveWord={moveWord} />
                             ))}
                         </div>
