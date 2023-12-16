@@ -6,15 +6,15 @@ export default async function UnAuthorizedApiRequest({ endpoint, type, body = nu
         let data
         switch (type) {
             case 'get':
-                data = await axios.get(`http://localhost:5000${endpoint}`)
-                // data = await axios.get(`https://mernbackendapp-0h0r.onrender.com${endpoint}`)
+                // data = await axios.get(`http://localhost:5000${endpoint}`)
+                data = await axios.get(`https://mernbackendapp-0h0r.onrender.com${endpoint}`)
                 break;
 
             case 'post':
                 data = await axios({
                     method: 'post',
-                    url: `http://localhost:5000${endpoint}`,
-                    // url: `https://mernbackendapp-0h0r.onrender.com${endpoint}`,
+                    // url: `http://localhost:5000${endpoint}`,
+                    url: `https://mernbackendapp-0h0r.onrender.com${endpoint}`,
                     headers: {},
                     data: body
                 })
@@ -23,7 +23,8 @@ export default async function UnAuthorizedApiRequest({ endpoint, type, body = nu
             case 'delete':
                 data = await axios({
                     method: 'delete',
-                    url: `http://localhost:5000${endpoint}`,
+                    // url: `http://localhost:5000${endpoint}`,
+                    url: `https://mernbackendapp-0h0r.onrender.com${endpoint}`,
                     headers: {},
                 })
                 break;
