@@ -9,7 +9,6 @@ export default function ComprehensionQuestion({ html_text, mcqs, description }) 
 
     const handleOptionChange = (option) => {
         setSelectedOption(option)
-        console.log("0000000000000000000", option)
         // handleOptionChange(id, option)
     }
 

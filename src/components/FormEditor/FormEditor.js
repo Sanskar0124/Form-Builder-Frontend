@@ -264,7 +264,6 @@ const FormEditor = ({ questionId, type, setForm }) => {
         updatedItems.splice(toIndex, 0, movedItem);
 
         setItems(updatedItems);
-        console.log(updatedItems);
         // Update setForm to include the order
         setForm((prevItems) =>
             prevItems.map((item) =>
@@ -348,7 +347,6 @@ const FormEditor = ({ questionId, type, setForm }) => {
         const [movedItem] = updatedItems.splice(fromIndex, 1);
         updatedItems.splice(toIndex, 0, movedItem);
         setMcqs(updatedItems);
-        console.log("888888888888888888888888", updatedItems)
         setForm((prevItems) =>
             prevItems.map((item) =>
                 item.id === questionId
@@ -398,7 +396,6 @@ const FormEditor = ({ questionId, type, setForm }) => {
                     });
 
                     underlinedWords.forEach(word => {
-                        console.log(`Processing underlined word: ${word}`);
                         const blankId = uuidv4();
 
                         const isWordPresent = blanks.find(item => item.element.props.children.props.text === word);
@@ -424,14 +421,9 @@ const FormEditor = ({ questionId, type, setForm }) => {
                 const removedWords = (prevUnderlinedWords || []).filter(word => !underlinedWords?.includes(word));
 
                 removedWords?.forEach(removedWord => {
-                    console.log('Underline removed. Removed word:', removedWord);
-
-                    // Check if the removed word is present in setBlanks
                     const removedWordItem = blanks.find(item => item.element.props.children.props.text === removedWord);
 
                     if (removedWordItem) {
-                        // Perform your custom logic here with the removed word
-                        // Remove the item from setBlanks
                         setBlanks(prevItems => prevItems.filter(item => item !== removedWordItem));
                         setForm((prevItems) =>
                             prevItems.map((item) => {
@@ -478,11 +470,9 @@ const FormEditor = ({ questionId, type, setForm }) => {
 
     const handleFileUpload = (value) => {
         setUploadedFile(value);
-        console.log("qqqqqqqqqqqqqqqqqqqqq", questionId);
         setForm((prevItems) => prevItems.map((item) =>
             item.id === questionId ? { ...item, img: value } : item
         ))
-        console.log("99999", value)
     };
 
     const handleMCQOptionSelect = (option) => {
